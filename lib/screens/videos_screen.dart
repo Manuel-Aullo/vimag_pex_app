@@ -3,7 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../services/pexels_service.dart';
-import 'video_player.dart';
+import 'video_player_screen.dart';
 
 /// A [StatefulWidget] that fetches and displays videos based on [query].
 class VideosScreen extends StatefulWidget {
