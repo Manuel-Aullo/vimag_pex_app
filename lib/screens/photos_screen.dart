@@ -3,6 +3,7 @@ library;
 
 import 'package:flutter/material.dart';
 import '../services/pexels_service.dart';
+import 'photo_viewer_screen.dart';
 
 /// A stateful widget that shows photo results corresponding to [query].
 class PhotosScreen extends StatefulWidget {
@@ -76,11 +77,22 @@ class _PhotosScreenState extends State<PhotosScreen> {
             final src = photo['src'];
             // Use the 'medium' version of the image as a thumbnail.
             final thumbnailUrl = src?['medium'];
-            return Card(
-              child:
-                  thumbnailUrl != null
-                      ? Image.network(thumbnailUrl, fit: BoxFit.cover)
-                      : Container(color: Colors.grey),
+            return GestureDetector(
+              onTap: () {
+                // Navigate to the photo viewer screen when tapped.
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder:
+                        (_) => PhotoViewerScreen(imageUrl: src?['original']),
+                  ),
+                );
+              },
+              child: Card(
+                child:
+                    thumbnailUrl != null
+                        ? Image.network(thumbnailUrl, fit: BoxFit.cover)
+                        : Container(color: Colors.grey),
+              ),
             );
           },
         );
