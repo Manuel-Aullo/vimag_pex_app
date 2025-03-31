@@ -67,6 +67,8 @@ class _PhotosScreenState extends State<PhotosScreen> {
 
         // Otherwise, show the grid of photos.
         final photos = snapshot.data!;
+
+        // Display the photos in a grid view.
         return GridView.builder(
           itemCount: photos.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
