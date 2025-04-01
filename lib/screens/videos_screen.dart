@@ -66,6 +66,8 @@ class _VideosScreenState extends State<VideosScreen> {
         }
 
         final videos = snapshot.data!;
+        // Display the list of videos.
+        // Use ListView.builder for better performance with large lists.
         return ListView.builder(
           itemCount: videos.length,
           itemBuilder: (context, index) {
