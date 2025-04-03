@@ -42,9 +42,11 @@ class ToggleButton extends StatefulWidget {
   /// so the icon signals a switch to dark mode). Defaults to [Icons.nightlight_round].
   final IconData offModeIcon;
 
-  const ToggleButton({
+  /// Ensures the provided duration is a valid animation transition duration.
+  /// Throws an [AssertionError] if the duration is not within the valid range.
+  ToggleButton({
     super.key,
-    this.animationDuration = const Duration(milliseconds: 360),
+    this.animationDuration = const Duration(milliseconds: 300),
     this.containerWidthFactor = 0.5,
     this.containerHeightFactor = 0.25,
     this.activeColor = const Color(0xffFFC209),
@@ -54,7 +56,13 @@ class ToggleButton extends StatefulWidget {
     this.onToggle,
     this.onModeIcon = Icons.light_mode_outlined,
     this.offModeIcon = Icons.dark_mode_outlined,
-  });
+  }) {
+    assert(
+      animationDuration.inMilliseconds >= 100 &&
+          animationDuration.inMilliseconds <= 1500,
+      'Animation duration must be between 0,1 seconds and 1,5 seconds',
+    );
+  }
 
   /// Default transition builder (a fade transition).
   static Widget _defaultIconTransition(
@@ -105,6 +113,11 @@ class _ThemeToggleButtonState extends State<ToggleButton> {
             }
           },
           child: Container(
+            /// The width of the toggle button, calculated as half of the `outerWidth`.
+            ///
+            /// `outerWidth` represents the total width available for the toggle button
+            /// container. Dividing it by 2 ensures that the toggle button occupies
+            /// half of the available width, allowing for a responsive and balanced layout.
             width: outerWidth / 2,
             height: outerWidth / 2, // Making a square container for the icon.
             decoration: BoxDecoration(
