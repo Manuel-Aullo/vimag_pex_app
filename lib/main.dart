@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import './theme/color-tokens.dart';
 
 /// Imports the theme provider for managing light/dark mode.
 import './providers/theme_provider.dart';
@@ -41,10 +43,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       // Provides global state (e.g., theme) to the widget tree.
-      providers: [ChangeNotifierProvider(create: (ctx) => ThemeProvider())],
+      providers: <SingleChildWidget>[
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (BuildContext ctx) => ThemeProvider(),
+        ),
+      ],
       child: Consumer<ThemeProvider>(
         builder:
-            (context, themeObject, _) => MaterialApp(
+            (BuildContext context, ThemeProvider themeObject, _) => MaterialApp(
               debugShowCheckedModeBanner: false,
               title: 'Search Photos & Videos',
               themeMode: themeObject.mode,
@@ -58,8 +64,8 @@ class MyApp extends StatelessWidget {
                 ).copyWith(secondary: Colors.amber[700]),
                 visualDensity: VisualDensity.adaptivePlatformDensity,
                 appBarTheme: const AppBarTheme(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
+                  backgroundColor: LightThemeColors.backgroundPrimary,
+                  foregroundColor: LightThemeColors.textStrong,
                 ),
               ),
               darkTheme: ThemeData(
@@ -67,12 +73,14 @@ class MyApp extends StatelessWidget {
                 brightness: Brightness.dark,
                 primaryColor: Colors.blue[300],
                 appBarTheme: const AppBarTheme(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
+                  backgroundColor: DarkThemeColors.backgroundPrimary,
+                  foregroundColor: DarkThemeColors.textBrand,
                 ),
                 colorScheme: ColorScheme.fromSwatch(
                   brightness: Brightness.dark,
-                  primarySwatch: Colors.blue,
+                  primarySwatch: createMaterialColor(
+                    DarkThemeColors.backgroundButtonPrimaryActive,
+                  ),
                 ).copyWith(secondary: Colors.amber),
                 visualDensity: VisualDensity.adaptivePlatformDensity,
               ),
@@ -80,7 +88,7 @@ class MyApp extends StatelessWidget {
                 // Defines the main app scaffold with AppBar and HomeScreen body.
                 appBar: AppBar(
                   title: const Text('Search Photos & Videos'),
-                  actions: [
+                  actions: <Widget>[
                     // Toggle button for switching between light and dark modes.
                     ToggleButton(
                       iconBackgroundColor: Colors.transparent,
